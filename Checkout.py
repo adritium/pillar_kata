@@ -1,9 +1,7 @@
 from Item import Item
 
+
 class Checkout:
-
-
-
     def __init__(self):
         # Database holding available items to purchase
         self.item_db = {}
@@ -11,19 +9,19 @@ class Checkout:
         # Checkout cart
         self.cart = {}
 
-    def createItemWeight(self, name, cost):
+    def create_item_db_weight(self, name, cost):
         self.item_db[name] = Item(name, cost, Item.ItemType.WEIGHT)
 
-    def createItemCount(self, name, cost):
+    def create_item_db_count(self, name, cost):
         self.item_db[name] = Item(name, cost, Item.ItemType.COUNT)
 
-    def getItemCost(self, name):
+    def get_item_cost(self, name):
         item = self.item_db[name]
         if not item:
             raise Exception
-        return item.getCost()
+        return item.get_cost()
 
-    def removeItem(self, name):
+    def remove_item(self, name):
         if name in self.item_db:
             del self.item_db[name]
 

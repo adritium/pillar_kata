@@ -1,5 +1,6 @@
 from enum import Enum
 
+
 class Item:
 
     class ItemType(Enum):
@@ -11,8 +12,8 @@ class Item:
         self.cost = cost
         self.type = item_type
 
-    def getType(self):
+    def get_type(self):
         return self.type
 
-    def getCost(self):
+    def get_cost(self):
         return self.cost

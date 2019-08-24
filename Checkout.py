@@ -10,9 +10,17 @@ class Checkout:
         self.cart = {}
 
     def create_item_db_weight(self, name, cost):
+        # If there's already an item with that name, it's an error
+        if name in self.item_db:
+            raise Exception
+
         self.item_db[name] = Item(name, cost, Item.ItemType.WEIGHT)
 
     def create_item_db_count(self, name, cost):
+        # If there's already an item with that name, it's an error
+        if name in self.item_db:
+            raise Exception
+
         self.item_db[name] = Item(name, cost, Item.ItemType.COUNT)
 
     def get_item_cost(self, name):
@@ -25,7 +33,7 @@ class Checkout:
         if name in self.item_db:
             del self.item_db[name]
 
-    def encart(self, item_name, unit_amount):
+    def scan(self, item_name, unit_amount):
         self.cart[item_name] = unit_amount
 
     def get_cart_total(self):

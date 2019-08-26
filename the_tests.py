@@ -33,15 +33,12 @@ class TestCheckoutOrder(unittest.TestCase):
         with self.assertRaises(Exception):
             self.Checkout.create_item_db_count("tuna fish (can)", 2.00)
 
-    def test_scan_one_item(self):
+    def test_scan_one_weight_item_get_total(self):
         self.createItemDatabase()
         # Since each item is unique wrt the units of measurement, no need to specify units
         self.Checkout.scan("tuna fish (weight)", 3)
         cart_cost = self.Checkout.get_cart_total()
-
         self.assertEqual(cart_cost, 5.24*3)
-
-    #def test_scanItem(self):
 
 
 if __name__ == "__main__":

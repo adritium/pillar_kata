@@ -40,6 +40,11 @@ class TestCheckoutOrder(unittest.TestCase):
         cart_cost = self.Checkout.get_cart_total()
         self.assertEqual(cart_cost, 5.24*3)
 
+    def test_scan_one_count_item_get_total(self):
+        self.createItemDatabase()
+        self.Checkout.scan("donuts (dozen)")
+        cart_cost = self.Checkout.get_cart_total()
+        self.assertEqual(cart_cost, 3)
 
 if __name__ == "__main__":
     unittest.main()

@@ -33,17 +33,23 @@ class Checkout:
         if name in self.item_db:
             del self.item_db[name]
 
-    def scan(self, item_name, unit_amount):
-        self.cart[item_name] = unit_amount
+    def scan(self, item_name, weight_amount=None):
+        if weight_amount is None:
+            # scanning an item by count
+            if item_name not in self.cart:
+                self.cart[item_name] = 1
+            else:
+                self.cart[item_name] += 1
+        else:
+            if item_name not in self.cart:
+                self.cart[item_name] = weight_amount
+            else:
+                self.cart[item_name] += weight_amount
+
 
     def get_cart_total(self):
         cost = 0
         for item_name, unit_amount in self.cart.items():
             cost = cost + self.get_item_cost(item_name) * unit_amount
         return cost
-
-    #def scanItem(self, name, count):
-
-
-
 

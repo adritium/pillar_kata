@@ -46,5 +46,16 @@ class TestCheckoutOrder(unittest.TestCase):
         cart_cost = self.Checkout.get_cart_total()
         self.assertEqual(cart_cost, 3)
 
+    def test_unscan_one_count_item(self):
+        self.createItemDatabase()
+
+        self.Checkout.scan("donuts (dozen)")
+        in_cart = self.Checkout.is_item_in_cart("donuts (dozen)")
+        self.assertEqual(in_cart[0], True)
+
+        self.Checkout.unscan("donuts (dozen)")
+        in_cart = self.Checkout.is_item_in_cart("donuts (dozen)")
+        self.assertEqual(in_cart[0], False)
+
 if __name__ == "__main__":
     unittest.main()

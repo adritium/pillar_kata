@@ -46,10 +46,26 @@ class Checkout:
             else:
                 self.cart[item_name] += weight_amount
 
+    def unscan(self, name, weight_amount=None):
+        if name not in self.cart:
+            raise Exception
+
+        if weight_amount is None:
+            # removing an instance of an item by count
+            self.cart[name] -= 1
+        else:
+            self.cart[name] -= weight_amount
+
+        if self.cart[name] == 0:
+            del self.cart[name]
 
     def get_cart_total(self):
         cost = 0
         for item_name, unit_amount in self.cart.items():
             cost = cost + self.get_item_cost(item_name) * unit_amount
         return cost
+
+    def is_item_in_cart(self, name):
+        item_cart = (True, self.cart[name]) if name in self.cart else (False, None)
+        return item_cart
 

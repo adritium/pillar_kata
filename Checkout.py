@@ -9,6 +9,12 @@ class Checkout:
         # Checkout cart
         self.cart = {}
 
+        # Markdowns
+        self.markdowns =  {}
+
+        # Specials
+
+
     def create_item_db_weight(self, name, cost):
         # If there's already an item with that name, it's an error
         if name in self.item_db:
@@ -62,10 +68,21 @@ class Checkout:
     def get_cart_total(self):
         cost = 0
         for item_name, unit_amount in self.cart.items():
-            cost = cost + self.get_item_cost(item_name) * unit_amount
+            if item_name in self.markdowns:
+                cost = cost + (self.get_item_cost(item_name) - self.markdowns[item_name]) * unit_amount
+            else:
+                cost = cost + self.get_item_cost(item_name) * unit_amount
         return cost
 
     def is_item_in_cart(self, name):
         item_cart = (True, self.cart[name]) if name in self.cart else (False, None)
         return item_cart
 
+    def add_markdown(self, name, amount):
+        self.markdowns[name] = amount
+
+    def get_markdown(self, name):
+        if name in self.markdowns:
+            return self.markdowns[name]
+        else:
+            return None

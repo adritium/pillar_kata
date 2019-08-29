@@ -16,6 +16,10 @@ class TestCheckoutOrder(unittest.TestCase):
         self.Checkout.create_item_db_count("pepsi (2 liter)", 2.5)
         self.Checkout.create_item_db_count("water (2 liter)", 1.0)
         self.Checkout.create_item_db_count("donuts (dozen)", 3)
+        self.Checkout.create_item_db_count("watermelon", 5)
+        self.Checkout.create_item_db_count("doritos", 2)
+        self.Checkout.create_item_db_count("lemon", 2)
+
 
     def test_createItemDbWeight(self):
         self.createItemDatabase()
@@ -56,6 +60,41 @@ class TestCheckoutOrder(unittest.TestCase):
         self.Checkout.unscan("donuts (dozen)")
         in_cart = self.Checkout.is_item_in_cart("donuts (dozen)")
         self.assertEqual(in_cart[0], False)
+
+    def test_add_markdown(self):
+        self.Checkout.add_markdown("watermelon", 0.5)
+        markdown = self.Checkout.get_markdown("watermelon")
+        self.assertEqual(markdown, 0.5)
+
+        with self.assertRaises(Exception):
+            self.Checkout.get_markdown("lemon")
+
+    def test_one_count_item_with_markdown_total(self):
+        self.createItemDatabase()
+        self.Checkout.add_markdown("watermelon", 0.1)
+
+        self.Checkout.scan("watermelon")
+        cart_total = self.Checkout.get_cart_total()
+        self.assertEqual(cart_total, 4.9)
+
+    def test_one_weight_item_with_markdown_total(self):
+        self.createItemDatabase()
+        self.Checkout.add_markdown("tuna fish (weight)", 0.5)
+
+        self.Checkout.scan("tuna fish (weight)", 4)
+        cart_total = self.Checkout.get_cart_total()
+        self.assertEqual(cart_total, 4*(5.24-0.5))
+
+    def test_items_with_markdown(self):
+        self.createItemDatabase()
+        self.Checkout.add_markdown("doritos", .1)
+
+        self.Checkout.scan("doritos")
+        self.Checkout.scan("doritos")
+        self.Checkout.scan("tuna fish (weight)", 2)
+        cart_total = self.Checkout.get_cart_total()
+        self.assertEqual(cart_total, 2*(2-.1) + 2*5.24)
+
 
 if __name__ == "__main__":
     unittest.main()

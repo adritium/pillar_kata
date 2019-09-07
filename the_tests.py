@@ -95,6 +95,59 @@ class TestCheckoutOrder(unittest.TestCase):
         cart_total = self.Checkout.get_cart_total()
         self.assertEqual(cart_total, 2*(2-.1) + 2*5.24)
 
+    def test_count_special_N_for_X(self):
+        self.createItemDatabase()
+        self.Checkout.add_count_special_N_for_X("doritos", 3, 5)
+
+        # 1
+        self.Checkout.scan("doritos")
+        total = self.Checkout.get_cart_total()
+        self.assertEqual(total, 2)
+
+        # 2
+        self.Checkout.scan("doritos")
+        total = self.Checkout.get_cart_total()
+        self.assertEqual(total, 4)
+
+        # 3
+        self.Checkout.scan("doritos")
+        total = self.Checkout.get_cart_total()
+        self.assertEqual(total, 5)
+
+        # 4
+        self.Checkout.scan("doritos")
+        total = self.Checkout.get_cart_total()
+        self.assertEqual(total, 7)
+
+        # 5
+        self.Checkout.scan("doritos")
+        total = self.Checkout.get_cart_total()
+        self.assertEqual(total, 9)
+
+        # 6
+        self.Checkout.scan("doritos")
+        total = self.Checkout.get_cart_total()
+        self.assertEqual(total, 10)
+
+    def test_count_special_N_for_X_limits(self):
+        self.createItemDatabase()
+        self.Checkout.add_count_special_N_for_X("doritos", 3, 5, 3)
+
+        #
+        self.Checkout.scan("doritos")
+        self.Checkout.scan("doritos")
+        self.Checkout.scan("doritos")
+
+        total = self.Checkout.get_cart_total()
+        self.assertEqual(total, 5)
+
+        self.Checkout.scan("doritos")
+        self.Checkout.scan("doritos")
+        self.Checkout.scan("doritos")
+
+        total = self.Checkout.get_cart_total()
+        self.assertEqual(total, 11)
+
 
 if __name__ == "__main__":
     unittest.main()

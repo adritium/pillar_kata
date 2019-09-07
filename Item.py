@@ -3,7 +3,7 @@ from enum import Enum
 
 class Item:
 
-    class ItemType(Enum):
+    class TypeEnum(Enum):
         WEIGHT = 1
         COUNT = 2
 

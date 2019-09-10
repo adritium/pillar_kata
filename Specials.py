@@ -1,3 +1,4 @@
+import math
 class Special:
     def __init__(self):
         pass
@@ -22,9 +23,17 @@ class CountSpecial1(Special):
             effective_amount = self.limit
 
         remainder = effective_amount % (self.N + self.M)
-        effective_amount -= remainder
+        divisor = math.floor(effective_amount / (self.N + self.M))
 
-        cost = self.unit_cost*effective_amount/(self.N+self.M)*(self.N + (1-self.X/100)*self.M)
+        # number of items to which the full price applies
+        num_full_price = divisor * self.N
+        num_full_price += self.N if remainder > self.N else remainder
+
+        # number of items left over
+        num_discounted = divisor * self.M
+        num_discounted += 0 if remainder < self.N else remainder - self.N
+
+        cost = self.unit_cost * (num_full_price + (1-self.X/100)*num_discounted)
 
         return cost, amount-effective_amount
 

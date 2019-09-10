@@ -6,7 +6,7 @@ class Checkout:
         # Database holding available items to purchase
         self.item_db = {}
 
-        # Checkout cart
+        # checkout cart
         self.cart = {}
 
         # Markdowns
@@ -121,10 +121,12 @@ class Checkout:
         else:
             raise Exception
 
-    def add_count_special_1(self, name, N, M, X, limit=None):
+    def add_count_special_N_M_X(self, name, N, M, X, limit=None):
         if name in self.item_db and self.item_db[name].get_type() is Item.TypeEnum.COUNT:
             unit_cost = self.get_item_cost(name)
             self.specials[name] = CountSpecial1(unit_cost, N, M, X, limit)
+        else:
+            raise Exception
 
     def add_count_special_N_for_X(self, name, N, X, limit=None):
         if name in self.item_db and self.item_db[name].get_type() is Item.TypeEnum.COUNT:

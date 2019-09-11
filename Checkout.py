@@ -30,10 +30,10 @@ class Checkout:
         self.item_db[name] = Item(name, cost, Item.TypeEnum.COUNT)
 
     def get_item_cost(self, name):
-        item = self.item_db[name]
-        if not item:
-            raise Exception
-        return item.get_cost()
+        if name not in self.item_db:
+            return None
+        else:
+            return self.item_db[name].get_cost()
 
     def remove_item_db(self, name):
         if name in self.item_db:
@@ -84,10 +84,10 @@ class Checkout:
         return item_cart
 
     def _get_normal_cost(self, name, amount):
-        return self.get_item_cost(name) * amount
+        return self.item_db[name].get_cost() * amount
 
     def _get_markdown_cost(self, name, amount):
-        return (self.get_item_cost(name) - self.markdowns[name]) * amount
+        return (self.item_db[name].get_cost() - self.markdowns[name]) * amount
 
     def _get_specials_cost(self, name, amount):
         cost = 0
@@ -123,7 +123,7 @@ class Checkout:
 
     def add_count_special_N_M_X(self, name, N, M, X, limit=None):
         if name in self.item_db and self.item_db[name].get_type() is Item.TypeEnum.COUNT:
-            unit_cost = self.get_item_cost(name)
+            unit_cost = self.item_db[name].get_cost()
             self.specials[name] = CountSpecial1(unit_cost, N, M, X, limit)
         else:
             raise Exception
@@ -136,7 +136,7 @@ class Checkout:
 
     def add_weight_special_1(self, name, N, M, X, limit=None):
         if name in self.item_db and self.item_db[name].get_type() is Item.TypeEnum.WEIGHT:
-            unit_cost = self.get_item_cost(name)
+            unit_cost = self.item_db[name].get_cost()
             self.specials[name] = WeightSpecial1(unit_cost, N, M, X, limit)
         else:
             raise Exception

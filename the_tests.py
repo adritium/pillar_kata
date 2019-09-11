@@ -29,8 +29,8 @@ class TestCheckoutOrder(unittest.TestCase):
     def test_removeItemDb(self):
         self.createItemDatabase()
         self.checkout.remove_item_db("tuna fish (weight)")
-        with self.assertRaises(Exception):
-            self.checkout.get_item_cost("tuna fish (weight)")
+        cost = self.checkout.get_item_cost("tuna fish (weight)")
+        self.assertEqual(cost, None)
 
     def test_add_duplicate_item(self):
         self.checkout.create_item_db_count("tuna fish (can)", 3.00)

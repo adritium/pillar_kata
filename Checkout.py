@@ -1,5 +1,5 @@
 from Item import Item
-from Specials import WeightSpecial1, CountSpecial1, CountSpecial2
+from Specials import WeightSpecial1, CountSpecial_N_M_X, CountSpecial_N_for_X
 
 class Checkout:
     def __init__(self):
@@ -124,17 +124,17 @@ class Checkout:
     def add_count_special_N_M_X(self, name, N, M, X, limit=None):
         if name in self.item_db and self.item_db[name].get_type() is Item.TypeEnum.COUNT:
             unit_cost = self.item_db[name].get_cost()
-            self.specials[name] = CountSpecial1(unit_cost, N, M, X, limit)
+            self.specials[name] = CountSpecial_N_M_X(unit_cost, N, M, X, limit)
         else:
             raise Exception
 
     def add_count_special_N_for_X(self, name, N, X, limit=None):
         if name in self.item_db and self.item_db[name].get_type() is Item.TypeEnum.COUNT:
-            self.specials[name] = CountSpecial2(N, X, limit)
+            self.specials[name] = CountSpecial_N_for_X(N, X, limit)
         else:
             raise Exception
 
-    def add_weight_special_1(self, name, N, M, X, limit=None):
+    def add_weight_special_N_M_X(self, name, N, M, X, limit=None):
         if name in self.item_db and self.item_db[name].get_type() is Item.TypeEnum.WEIGHT:
             unit_cost = self.item_db[name].get_cost()
             self.specials[name] = WeightSpecial1(unit_cost, N, M, X, limit)

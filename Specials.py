@@ -7,7 +7,7 @@ class Special:
         pass
 
 
-class CountSpecial1(Special):
+class CountSpecial_N_M_X(Special):
     # * "Buy N items get M at %X off." For example, "Buy 1 get 1 free" or "Buy 2 get 1 half off."
     def __init__(self, unit_cost, N, M, X, limit=None):
         self.N = N
@@ -38,7 +38,7 @@ class CountSpecial1(Special):
         return cost, amount-effective_amount
 
 
-class CountSpecial2(Special):
+class CountSpecial_N_for_X(Special):
     # * "N for $X. in multiples of N" For example, "3 for $5.00"
     def __init__(self, N, X, limit=None):
         self.N = N

@@ -66,8 +66,8 @@ class TestCheckoutOrder(unittest.TestCase):
         markdown = self.checkout.get_markdown("watermelon")
         self.assertEqual(markdown, 0.5)
 
-        with self.assertRaises(Exception):
-            self.checkout.get_markdown("lemon")
+        markdown = self.checkout.get_markdown("lemon")
+        self.assertEqual(markdown, None)
 
     def test_one_count_item_with_markdown_total(self):
         self.createItemDatabase()

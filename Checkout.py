@@ -66,7 +66,7 @@ class Checkout:
             del self.cart[name]
 
     def empty_cart(self):
-        del self.cart
+        self.cart = {}
 
     def get_cart_total(self):
         cost = 0
@@ -113,13 +113,13 @@ class Checkout:
 
     def empty_markdowns(self):
         if self.markdowns:
-            del self.markdowns
+            self.markdowns = {}
 
     def get_markdown(self, name):
         if name in self.markdowns:
             return self.markdowns[name]
         else:
-            raise Exception
+            return None
 
     def add_count_special_N_M_X(self, name, N, M, X, limit=None):
         if name in self.item_db and self.item_db[name].get_type() is Item.TypeEnum.COUNT:

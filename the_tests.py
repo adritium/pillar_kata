@@ -8,7 +8,7 @@ class TestCheckoutOrder(unittest.TestCase):
 
     def createItemDatabase(self):
         self.checkout.create_item_db_weight("tuna fish (weight)", 5.24)
-        self.checkout.create_item_db_weight("carrots", 2)
+        self.checkout.create_item_db_weight("carrots", 3.5)
         self.checkout.create_item_db_weight("tomatoes", 4.2)
         self.checkout.create_item_db_weight("potatoes", 3)
 
@@ -150,7 +150,7 @@ class TestCheckoutOrder(unittest.TestCase):
 
     def test_count_special_N_M_X(self):
         self.createItemDatabase()
-        self.checkout.add_count_special_N_M_X("doritos", 3, 2, 20)
+        self.checkout.add_special_N_M_X("doritos", 3, 2, 20)
 
         # 1
         self.checkout.scan("doritos")
@@ -204,7 +204,7 @@ class TestCheckoutOrder(unittest.TestCase):
 
     def test_count_special_N_M_X_limits(self):
         self.createItemDatabase()
-        self.checkout.add_count_special_N_M_X("doritos", 3, 2, 60, 5)
+        self.checkout.add_special_N_M_X("doritos", 3, 2, 60, 5)
 
         # 1
         self.checkout.scan("doritos")
@@ -255,6 +255,45 @@ class TestCheckoutOrder(unittest.TestCase):
         self.checkout.scan("doritos")
         total = self.checkout.get_cart_total()
         self.assertEqual(total, (3 * 2 + 0.4 * 2 * 2) + 5*2)
+
+    def test_weight_special_N_M_X(self):
+        self.createItemDatabase()
+
+        self.checkout.add_special_N_M_X("carrots", 3, 1, 25)
+        # 1 - add 1 pounds of carrots
+        self.checkout.scan("carrots", 1)
+        total = self.checkout.get_cart_total()
+        self.assertEqual(total, 3.5*1)
+
+        # 2 - add 1 pound of carrots
+        self.checkout.scan("carrots", 1)
+        total = self.checkout.get_cart_total()
+        self.assertEqual(total, 3.5*2)
+
+        # 3 - add 1 pound of carrots
+        self.checkout.scan("carrots", 1)
+        total = self.checkout.get_cart_total()
+        self.assertEqual(total, 3.5*3)
+
+        # 4 - add 1 pound of carrots
+        self.checkout.scan("carrots", 1)
+        total = self.checkout.get_cart_total()
+        self.assertEqual(total, 3.5*3 + 0.75*3.5*1)
+
+        # 1 - add 1 pound of carrots
+        self.checkout.scan("carrots", 1)
+        total = self.checkout.get_cart_total()
+        self.assertEqual(total, (3.5*3 + 0.75*3.5*1) + 3.5*1)
+
+        # 2 - add 1 pound of carrots
+        self.checkout.scan("carrots", 1)
+        total = self.checkout.get_cart_total()
+        self.assertEqual(total, (3.5 * 3 + 0.75 * 3.5 * 1) + 3.5 * 2)
+
+        # 3 - add 1 pound of carrots
+        self.checkout.scan("carrots", 1)
+        total = self.checkout.get_cart_total()
+        self.assertEqual(total, (3.5 * 3 + 0.75 * 3.5 * 1) + 3.5 * 3)
 
 
 if __name__ == "__main__":

@@ -371,6 +371,14 @@ class TestCheckoutOrder(unittest.TestCase):
         total = self.checkout.get_cart_total()
         self.assertAlmostEqual(total, 5)
 
+        self.checkout.unscan("tuna fish (can)")
+        total = self.checkout.get_cart_total()
+        self.assertAlmostEqual(total, (3 - 0.5)*2)
+
+        self.checkout.scan("tuna fish (can)")
+        total = self.checkout.get_cart_total()
+        self.assertAlmostEqual(total, 5)
+
         # 2-1
         self.checkout.scan("tuna fish (can)")
         total = self.checkout.get_cart_total()

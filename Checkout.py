@@ -41,13 +41,21 @@ class Checkout:
             del self.item_db[name]
 
     def scan(self, item_name, weight_amount=None):
+        if item_name not in self.item_db:
+            raise Exception
+
         if weight_amount is None:
+            if self.item_db[item_name].get_type() is not Item.TypeEnum.COUNT:
+                raise Exception
             # scanning an item by count
             if item_name not in self.cart:
                 self.cart[item_name] = 1
             else:
                 self.cart[item_name] += 1
         else:
+            if self.item_db[item_name].get_type() is not Item.TypeEnum.WEIGHT:
+                raise Exception
+
             if item_name not in self.cart:
                 self.cart[item_name] = weight_amount
             else:

@@ -329,5 +329,63 @@ class TestCheckoutOrder(unittest.TestCase):
         total = self.checkout.get_cart_total()
         self.assertAlmostEqual(total, (3.5*2 + 0.9*3.5*1) +(3.5*2))
 
+        # 3 - add 1 pounds of carrots
+        self.checkout.scan("carrots", 1)
+        total = self.checkout.get_cart_total()
+        self.assertAlmostEqual(total, (3.5 * 2 + 0.9 * 3.5 * 1) + (3.5 * 2 + 0.9*3.5*1))
+
+        # 1 - add 1 pounds of carrots
+        self.checkout.scan("carrots", 1)
+        total = self.checkout.get_cart_total()
+        self.assertAlmostEqual(total, (3.5 * 2 + 0.9 * 3.5 * 1) + (3.5 * 2 + 0.9 * 3.5 * 1) + 3.5*1)
+
+        # 2 - add 1 pounds of carrots
+        self.checkout.scan("carrots", 1)
+        total = self.checkout.get_cart_total()
+        self.assertAlmostEqual(total, (3.5 * 2 + 0.9 * 3.5 * 1) + (3.5 * 2 + 0.9 * 3.5 * 1) + 3.5 * 2)
+
+        # 3 - add 1 pounds of carrots
+        self.checkout.scan("carrots", 1)
+        total = self.checkout.get_cart_total()
+        self.assertAlmostEqual(total, (3.5 * 2 + 0.9 * 3.5 * 1) + (3.5 * 2 + 0.9 * 3.5 * 1) + 3.5 * 3)
+
+    def test_markdown_plus_special_with_limits(self):
+        # This will test that items
+        self.createItemDatabase()
+
+        self.checkout.add_count_special_N_for_X("tuna fish (can)", 3, 5, 3)
+        self.checkout.add_markdown("tuna fish (can)", 0.5)
+
+        # 1-1
+        self.checkout.scan("tuna fish (can)")
+        total = self.checkout.get_cart_total()
+        self.assertAlmostEqual(total, (3-0.5)*1)
+
+        # 1-2
+        self.checkout.scan("tuna fish (can)")
+        total = self.checkout.get_cart_total()
+        self.assertAlmostEqual(total, (3 - 0.5) * 2)
+
+        # 1-3
+        self.checkout.scan("tuna fish (can)")
+        total = self.checkout.get_cart_total()
+        self.assertAlmostEqual(total, 5)
+
+        # 2-1
+        self.checkout.scan("tuna fish (can)")
+        total = self.checkout.get_cart_total()
+        self.assertAlmostEqual(total, (5) + (3-.5)*1)
+
+        # 2-2
+        self.checkout.scan("tuna fish (can)")
+        total = self.checkout.get_cart_total()
+        self.assertAlmostEqual(total, (5) + (3 - .5) * 2)
+
+        # 2-3
+        self.checkout.scan("tuna fish (can)")
+        total = self.checkout.get_cart_total()
+        self.assertAlmostEqual(total, (5) + (3-.5)*3)
+
+
 if __name__ == "__main__":
     unittest.main()

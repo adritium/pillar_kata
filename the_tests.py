@@ -20,7 +20,6 @@ class TestCheckoutOrder(unittest.TestCase):
         self.checkout.create_item_db_count("doritos", 2)
         self.checkout.create_item_db_count("lemon", 2)
 
-
     def test_createItemDbWeight(self):
         self.createItemDatabase()
         tuna_fish_cost = self.checkout.get_item_cost("tuna fish (weight)")
@@ -54,12 +53,12 @@ class TestCheckoutOrder(unittest.TestCase):
         self.createItemDatabase()
 
         self.checkout.scan("donuts (dozen)")
-        in_cart = self.checkout.is_item_in_cart("donuts (dozen)")
-        self.assertAlmostEqual(in_cart[0], True)
+        num_in_cart = self.checkout.get_num_in_cart("donuts (dozen)")
+        self.assertGreater(num_in_cart, 0)
 
         self.checkout.unscan("donuts (dozen)")
-        in_cart = self.checkout.is_item_in_cart("donuts (dozen)")
-        self.assertAlmostEqual(in_cart[0], False)
+        num_in_cart = self.checkout.get_num_in_cart("donuts (dozen)")
+        self.assertEqual(num_in_cart, 0)
 
     def test_add_markdown(self):
         self.checkout.add_markdown("watermelon", 0.5)

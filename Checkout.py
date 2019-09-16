@@ -88,9 +88,9 @@ class Checkout:
                 cost = cost + self._get_normal_cost(item_name, unit_amount)
         return cost
 
-    def is_item_in_cart(self, name):
-        item_cart = (True, self.cart[name]) if name in self.cart else (False, None)
-        return item_cart
+    def get_num_in_cart(self, name):
+        num_items = self.cart[name] if name in self.cart else 0
+        return num_items
 
     def _get_normal_cost(self, name, amount):
         return self.item_db[name].get_cost() * amount

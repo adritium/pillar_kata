@@ -143,4 +143,8 @@ class Checkout:
         else:
             raise Exception
 
-
+    def remove_special(self, name):
+        if name in self.specials:
+            del self.specials[name]
+        else:
+            raise Exception

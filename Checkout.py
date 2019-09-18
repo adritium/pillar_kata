@@ -30,6 +30,9 @@ class Checkout:
 
         self.item_db[name] = Item(name, cost, Item.TypeEnum.COUNT)
 
+    def reset_item_db(self):
+        self.item_db = {}
+
     def get_item_cost(self, name):
         if name not in self.item_db:
             return None
